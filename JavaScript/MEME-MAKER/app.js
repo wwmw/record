@@ -68,3 +68,5 @@ color.addEventListener("change", onColorChange);
 colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
 
 modeBtn.addEventListener("click", onModeClick);
+
+console.log("test");
