@@ -1,3 +1,4 @@
+const saveBtn = document.getElementById("save");
 const textInput = document.getElementById("text");
 const fileInput = document.getElementById("file");
 const modeBtn = document.getElementById("mode-btn");
@@ -19,6 +20,7 @@ const CANVAS_HEIGHT = 800;
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 ctx.lineWidth = lineWidth.value;
+ctx.lineCap = "round";
 let isPainting = false;
 let isFilling = false;
 
@@ -80,12 +82,24 @@ function onFileChange(event) {
   image.onload = function name() {
     ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     fileInput.value = null;
+  };
+}
+function onDoubleClick(event) {
+  const text = textInput.value;
+  if (text !== "") {
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.font = "68px sans-serif";
+    ctx.fillText(text, event.offsetX, event.offsetY);
+    ctx.restore();
   }
 }
-function onDoubleClick(event){
-  const text = textInput.value;
-  ctx.strokeText(text, event.offsetX, event.offsetY);
-  ctx.fillText(text, event.offsetX, event.offsetY);
+function onSaveClick() {
+  const url = canvas.toDataURL();
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "myDrawing.png";
+  a.click();
 }
 
 canvas.addEventListener("dblclick", onDoubleClick);
@@ -105,3 +119,4 @@ eraserBtn.addEventListener("click", onEraserClick);
 colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
 
 fileInput.addEventListener("change", onFileChange);
+saveBtn.addEventListener("click", onSaveClick);
